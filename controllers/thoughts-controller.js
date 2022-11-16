@@ -1,4 +1,3 @@
-const res = require("express/lib/response");
 const { Thought, User } = require("../models");
 
 const thoughtController = {
@@ -8,7 +7,7 @@ const thoughtController = {
     Thought.create(body)
       .then((dbThoughtData) => {
         return User.findOneAndUpdate(
-          { _id: req.userId },
+          { _id: req.body.userId },
           { $push: { thoughts: dbThoughtData._id } },
           { new: true }
         );
@@ -19,7 +18,7 @@ const thoughtController = {
           res.status(404).json({ message: "No User found with this id!" });
           return;
         }
-        res.json(dbUserData);
+        res.json({ message: "Thought has been added" });
       })
       .catch((err) => res.json(err));
   },
